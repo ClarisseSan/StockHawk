@@ -6,4 +6,5 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:textIsSelectable="true"
+    android:text="HAHAHAHAH"
     tools:context="com.sam_chordas.android.stockhawk.detail_flow.StockDetailFragment" />

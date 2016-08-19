@@ -120,7 +120,8 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
                     public void onItemClick(View v, int position) {
                         //TODO:
                         // do something on item click
-                    }
+                        Intent intent = new Intent(StockListActivity.this, StockDetailActivity.class);
+                        startActivity(intent);                    }
                 }));
         recyclerView.setAdapter(mCursorAdapter);
 
@@ -253,8 +254,8 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // This narrows the return to only the stocks that are most current.
         return new CursorLoader(this, QuoteProvider.Quotes.CONTENT_URI,
-                new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
-                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP},
+                new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.NAME, QuoteColumns.BIDPRICE,
+                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP },
                 QuoteColumns.ISCURRENT + " = ?",
                 new String[]{"1"},
                 null);

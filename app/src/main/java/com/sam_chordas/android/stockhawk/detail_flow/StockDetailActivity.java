@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.sam_chordas.android.stockhawk.R;
@@ -15,7 +16,7 @@ import com.sam_chordas.android.stockhawk.R;
  * item details are presented side-by-side with a list of items
  * in a {@link StockListActivity}.
  */
-public class StockDetailActivity extends Activity {
+public class StockDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
