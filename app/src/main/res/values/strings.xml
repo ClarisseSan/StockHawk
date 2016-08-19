@@ -10,7 +10,9 @@
   <string name="input_hint">FB</string>
   <string name="input_prefill"></string>
   <string name="network_toast">Uh-oh! This app requires an internet connection</string>
-  <string name="empty_stock_list">No stocks information available</string>
+  <string name="empty_stock_list">No stocks information available. The server is not returning data.</string>
     <string name="title_stock_list">Stocks</string>
     <string name="title_stock_detail">Stock Detail</string>
+  <string name="empty__list_no_network">No stocks information available. The network is not available to fetch stocks.</string>
+  <string name="no_symbol_found">No symbol found</string>
 </resources>

@@ -276,8 +276,14 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
         if ( mCursorAdapter.getItemCount() == 0 ) {
             TextView tv = (TextView) findViewById(R.id.recyclerview_stocks_empty);
             if ( null != tv ) {
-                // if cursor is empty, why? do we have an invalid location
-                int message = R.string.empty_stock_list;
+                int message;
+                if (!Utils.isNetworkAvailable(this)) {
+                    //network is not available
+                    message = R.string.empty__list_no_network;
+                }else{
+                    //network is available but still doesn't fetch data
+                     message = R.string.empty_stock_list;
+                    }
                 tv.setText(message);
             }
         }
