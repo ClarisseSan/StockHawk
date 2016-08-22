@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="72dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     >
@@ -23,15 +23,15 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="1"
-      android:gravity="end"
+      android:gravity="right"
       >
     <TextView
         android:id="@+id/bid_price"
         style="@style/BidPriceTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10sp"
-        android:paddingStart="10sp"
+        android:paddingRight="10sp"
+        android:paddingEnd="10sp"
         tools:text="1000.00"
         />
     <TextView
