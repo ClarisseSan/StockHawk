@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Stock Hawk</string>
+    <string name="action_settings">إعدادات</string>
+    <string name="add_symbol">إضافة رمز السهم</string>
+    <string name="content_test">بحث عن الأوراق المالية رمز</string>
+    <string name="empty__list_no_network">أي معلومات المخزونات المتاحة. الشبكة غير متوفرة لجلب الأسهم.</string>
+    <string name="empty_stock_list">أي معلومات المخزونات المتاحة. الملقم لا يعودون البيانات.</string>
+    <string name="network_toast">اه اوه! هذا التطبيق يتطلب اتصال بالإنترنت</string>
+    <string name="no_symbol_found">لم يتم العثور على رمز</string>
+    <string name="symbol_search">رمز البحث</string>
+    <string name="title_stock_detail">الأسهم التفاصيل</string>
+    <string name="title_stock_list">مخازن</string>
+</resources>
