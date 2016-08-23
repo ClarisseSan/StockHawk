@@ -27,69 +27,42 @@ public class Utils {
 
     public static boolean showPercent = true;
 
-    public static ArrayList quoteJsonToContentVals(String JSON, Context context) {
+
+
+    public static ArrayList quoteJsonToContentVals(String JSON){
         ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
         JSONObject jsonObject = null;
         JSONArray resultsArray = null;
-        try {
+        try{
             jsonObject = new JSONObject(JSON);
-            if (jsonObject != null && jsonObject.length() != 0) {
+            if (jsonObject != null && jsonObject.length() != 0){
                 jsonObject = jsonObject.getJSONObject("query");
                 int count = Integer.parseInt(jsonObject.getString("count"));
-
-                String name = "";
-                String averageDailyVolume = "";
-
-                if (count == 1) {
+                if (count == 1){
                     jsonObject = jsonObject.getJSONObject("results")
                             .getJSONObject("quote");
 
-
-                    resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
-
-                    if (resultsArray != null && resultsArray.length() != 0) {
-                        for (int i = 0; i < resultsArray.length(); i++) {
-                            jsonObject = resultsArray.getJSONObject(i);
-                            averageDailyVolume = jsonObject.getString("AverageDailyVolume");
-                            name = jsonObject.getString("Name");
-                            Log.e("COMPANY===============>", name);
-                            Log.e("AverageDailyVolume====>", averageDailyVolume);
-
-
-                            if (averageDailyVolume != "null") {
-                                batchOperations.add(buildBatchOperation(jsonObject));
-                            } else {
-                                Toast.makeText(context, context.getString(R.string.no_symbol_found), Toast.LENGTH_LONG).show();
-
-                            }
-
-                        }
+                    String averageDailyVolume = jsonObject.getString("AverageDailyVolume");
+                    if(!averageDailyVolume.equals("null")){
+                        batchOperations.add(buildBatchOperation(jsonObject));
+                    }else{
+                        //TODO show error message
                     }
 
 
-                } else {
+                } else{
                     resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
 
-
-                    if (resultsArray != null && resultsArray.length() != 0) {
-                        for (int i = 0; i < resultsArray.length(); i++) {
+                    if (resultsArray != null && resultsArray.length() != 0){
+                        for (int i = 0; i < resultsArray.length(); i++){
                             jsonObject = resultsArray.getJSONObject(i);
-                            averageDailyVolume = jsonObject.getString("AverageDailyVolume");
-                            name = jsonObject.getString("Name");
-                            Log.e("COMPANY===============>", name);
-                            Log.e("AverageDailyVolume====>", averageDailyVolume);
-
                             batchOperations.add(buildBatchOperation(jsonObject));
-
                         }
                     }
                 }
             }
-        } catch (JSONException e) {
-
+        } catch (JSONException e){
             Log.e(LOG_TAG, "String to JSON failed: " + e);
-
-
         }
         return batchOperations;
     }
