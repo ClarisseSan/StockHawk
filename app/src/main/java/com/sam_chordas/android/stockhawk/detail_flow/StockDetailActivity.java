@@ -1,14 +1,15 @@
 package com.sam_chordas.android.stockhawk.detail_flow;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.sam_chordas.android.stockhawk.R;
+import com.sam_chordas.android.stockhawk.ui.ChartFragment;
 
 /**
  * An activity representing a single Stock detail screen. This
@@ -16,7 +17,7 @@ import com.sam_chordas.android.stockhawk.R;
  * item details are presented side-by-side with a list of items
  * in a {@link StockListActivity}.
  */
-public class StockDetailActivity extends AppCompatActivity {
+public class StockDetailActivity extends AppCompatActivity implements ChartFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +43,11 @@ public class StockDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(StockDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(StockDetailFragment.ARG_ITEM_ID));
+            arguments.putString(StockDetailFragment.ARG_SYMBOL,
+                    getIntent().getStringExtra(StockDetailFragment.ARG_SYMBOL));
             StockDetailFragment fragment = new StockDetailFragment();
             fragment.setArguments(arguments);
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.stock_detail_container, fragment)
                     .commit();
         }
@@ -67,5 +68,10 @@ public class StockDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

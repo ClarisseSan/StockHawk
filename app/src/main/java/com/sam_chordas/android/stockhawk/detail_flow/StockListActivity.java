@@ -58,7 +58,7 @@ import java.util.List;
  */
 public class StockListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String LOG_TAG = StockListActivity.class.getSimpleName() ;
+    private static final String LOG_TAG = StockListActivity.class.getSimpleName();
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -85,6 +85,13 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_list);
 
+        if (findViewById(R.id.stock_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        }
 
         mContext = this;
         ConnectivityManager cm =
@@ -109,7 +116,6 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
         }
 
 
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.stock_list);
 
         //set empty view
@@ -125,11 +131,35 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
                     public void onItemClick(View v, int position) {
                         //TODO:
                         // do something on item click
-                        Intent intent = new Intent(StockListActivity.this, StockDetailActivity.class);
-                        startActivity(intent);                    }
+//                        Intent intent = new Intent(StockListActivity.this, StockDetailActivity.class);
+//                        startActivity(intent);
+
+
+                        if (mTwoPane) {
+                            Bundle arguments = new Bundle();
+                            arguments.putString(StockDetailFragment.ARG_SYMBOL, mCursorAdapter.getSymbol(position));
+                            //arguments.putString("movieId", Long.toString(holder.mItem.getMovie_id()));
+//                            arguments.putInt("flagData", 0);
+//                            arguments.putString("title", holder.mItem.getMovie_name());
+
+                            StockDetailFragment fragment = new StockDetailFragment();
+                            fragment.setArguments(arguments);
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.stock_detail_container, fragment)
+                                    .commit();
+
+                        } else {
+                            Context context = v.getContext();
+                            Intent intent = new Intent(context, StockDetailActivity.class);
+                            intent.putExtra(StockDetailFragment.ARG_SYMBOL, mCursorAdapter.getSymbol(position));
+
+                            context.startActivity(intent);
+                        }
+
+
+                    }
                 }));
         recyclerView.setAdapter(mCursorAdapter);
-
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -199,13 +229,7 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
         }
 
 
-        if (findViewById(R.id.stock_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
+
     }
 
 
@@ -260,7 +284,7 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
         // This narrows the return to only the stocks that are most current.
         return new CursorLoader(this, QuoteProvider.Quotes.CONTENT_URI,
                 new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.NAME, QuoteColumns.BIDPRICE,
-                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP },
+                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP},
                 QuoteColumns.ISCURRENT + " = ?",
                 new String[]{"1"},
                 null);
@@ -279,17 +303,17 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
         use to determine why they aren't seeing weather.
      */
     private void updateEmptyView() {
-        if ( mCursorAdapter.getItemCount() == 0 ) {
+        if (mCursorAdapter.getItemCount() == 0) {
             TextView tv = (TextView) findViewById(R.id.recyclerview_stocks_empty);
-            if ( null != tv ) {
+            if (null != tv) {
                 int message;
                 if (!Utils.isNetworkAvailable(this)) {
                     //network is not available
                     message = R.string.empty__list_no_network;
-                }else{
+                } else {
                     //network is available but still doesn't fetch data
-                     message = R.string.empty_stock_list;
-                    }
+                    message = R.string.empty_stock_list;
+                }
                 tv.setText(message);
             }
         }
@@ -321,5 +345,5 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
         }
         return true;
     }
-    
+
 }
