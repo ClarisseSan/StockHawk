@@ -1,6 +1,7 @@
 package com.sam_chordas.android.stockhawk.detail_flow;
 
 import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.app.Activity;
@@ -45,6 +47,7 @@ import com.sam_chordas.android.stockhawk.rest.Utils;
 import com.sam_chordas.android.stockhawk.service.StockIntentService;
 import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
+import com.sam_chordas.android.stockhawk.ui.ChartFragment;
 
 import java.util.List;
 
@@ -56,7 +59,7 @@ import java.util.List;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class StockListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class StockListActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, ChartFragment.OnFragmentInteractionListener {
 
     private static final String LOG_TAG = StockListActivity.class.getSimpleName();
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -346,4 +349,8 @@ public class StockListActivity extends AppCompatActivity implements LoaderManage
         return true;
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }
