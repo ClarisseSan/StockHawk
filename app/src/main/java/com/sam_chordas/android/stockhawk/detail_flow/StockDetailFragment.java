@@ -126,6 +126,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         CursorLoader loader = null;
 
         if(id==CURSOR_LOADER_ID){
+
             loader =  new CursorLoader(getContext(), QuoteProvider.Quotes.CONTENT_URI,
                     new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.NAME, QuoteColumns.BIDPRICE,
                             QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE
@@ -133,6 +134,8 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     QuoteColumns.SYMBOL + " = \"" + mSymbol + "\"",
                     null,
                     QuoteColumns._ID + " DESC");
+
+
         }
 
 
