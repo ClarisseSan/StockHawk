@@ -202,7 +202,6 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
             Fragment fragment = null;
             //create bundle to pass movieId to the fragments
             // Bundle bundle = generateBundle();
-
             //Context context = MovieDetailActivity.this;
 
             if (position == 0) {
