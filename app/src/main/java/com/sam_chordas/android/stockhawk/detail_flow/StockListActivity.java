@@ -1,6 +1,5 @@
 package com.sam_chordas.android.stockhawk.detail_flow;
 
-import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -11,21 +10,16 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,10 +31,8 @@ import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
 import com.sam_chordas.android.stockhawk.R;
-
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-import com.sam_chordas.android.stockhawk.detail_flow.dummy.DummyContent;
 import com.sam_chordas.android.stockhawk.rest.QuoteCursorAdapter;
 import com.sam_chordas.android.stockhawk.rest.RecyclerViewItemClickListener;
 import com.sam_chordas.android.stockhawk.rest.Utils;
@@ -48,8 +40,6 @@ import com.sam_chordas.android.stockhawk.service.StockIntentService;
 import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 import com.sam_chordas.android.stockhawk.ui.ChartFragment;
-
-import java.util.List;
 
 /**
  * An activity representing a list of Stocks. This activity
@@ -63,13 +53,13 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
 
     private static final String LOG_TAG = StockListActivity.class.getSimpleName();
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final int CURSOR_LOADER_ID = 0;
+    boolean isConnected;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
-
-
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -77,11 +67,9 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
     private CharSequence mTitle;
     private Intent mServiceIntent;
     private ItemTouchHelper mItemTouchHelper;
-    private static final int CURSOR_LOADER_ID = 0;
     private QuoteCursorAdapter mCursorAdapter;
     private Context mContext;
     private Cursor mCursor;
-    boolean isConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,18 +120,9 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
                 new RecyclerViewItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        //TODO:
-                        // do something on item click
-//                        Intent intent = new Intent(StockListActivity.this, StockDetailActivity.class);
-//                        startActivity(intent);
-
-
                         if (mTwoPane) {
                             Bundle arguments = new Bundle();
                             arguments.putString(StockDetailFragment.ARG_SYMBOL, mCursorAdapter.getSymbol(position));
-                            //arguments.putString("movieId", Long.toString(holder.mItem.getMovie_id()));
-//                            arguments.putInt("flagData", 0);
-//                            arguments.putString("title", holder.mItem.getMovie_name());
 
                             StockDetailFragment fragment = new StockDetailFragment();
                             fragment.setArguments(arguments);
@@ -232,7 +211,6 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
         }
 
 
-
     }
 
 
@@ -264,7 +242,7 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify a parent activity in AndroidManifest.xml.0
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
