@@ -6,6 +6,11 @@
       <item name="colorPrimary">@color/material_blue_500</item>
       <item name="colorPrimaryDark">@color/material_blue_700</item>
     <!-- Customize your theme here. -->
+</style>
+
+  <style name="AppTheme.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
   </style>
 
   <style name="PercentChangeTextStyle">
