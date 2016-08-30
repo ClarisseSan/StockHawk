@@ -89,8 +89,15 @@ public class ChartFragment extends Fragment {
         chart.setData(data);
         chart.setDescription("YHOO Stocks");
         chart.animateXY(2000, 2000);
-        chart.invalidate();
 
+        //chart label color
+        chart.getAxisLeft().setTextColor(Color.rgb(255, 255, 255));
+        chart.getAxisRight().setTextColor(Color.rgb(255, 255, 255));
+        chart.getXAxis().setTextColor(Color.rgb(255, 255, 255));
+        chart.getLegend().setTextColor(Color.rgb(255, 255, 255));
+
+
+        chart.invalidate();
 
         return view;
     }
@@ -153,9 +160,11 @@ public class ChartFragment extends Fragment {
         Entry v1e6 = new Entry(100.000f, 5); // Jun
         valueSet1.add(v1e6);
 
-        LineDataSet lineDataSet1 = new LineDataSet(valueSet1, "Brand 1");
-        //lineDataSet1.setColor(Color.rgb(0, 155, 0));
-        lineDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+        /* Dataset --> The set of data you have to draw in your chart */
+
+        LineDataSet lineDataSet1 = new LineDataSet(valueSet1, getString(R.string.price));
+        lineDataSet1.setColor(Color.rgb(0, 155, 0));
+        //lineDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
         lineDataSet1.setDrawFilled(true);
 
 
