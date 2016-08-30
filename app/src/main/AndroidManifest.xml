@@ -77,12 +77,14 @@
             </intent-filter>
 
             <!-- This specifies the widget provider info -->
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/stock_widget_info" />
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/stock_widget_info" />
         </receiver>
 
         <!-- The service serving the RemoteViews to the collection widget -->
         <service
-            android:name=".widget.WidgetService"
+            android:name=".widget.WidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="false" />
 

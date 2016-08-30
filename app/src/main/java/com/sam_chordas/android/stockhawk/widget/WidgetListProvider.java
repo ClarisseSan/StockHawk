@@ -1,57 +1,96 @@
 package com.sam_chordas.android.stockhawk.widget;
 
-import android.app.LauncherActivity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Binder;
+import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.sam_chordas.android.stockhawk.R;
+import com.sam_chordas.android.stockhawk.data.QuoteColumns;
+import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 
 import java.util.ArrayList;
 
 /**
  * If you are familiar with Adapter of ListView,this is the same as adapter
  * with few changes
- *
- *
+ * <p>
+ * <p>
  * tutorial: https://laaptu.wordpress.com/2013/07/19/android-app-widget-with-listview/
  */
 
 public class WidgetListProvider implements RemoteViewsService.RemoteViewsFactory {
-     private ArrayList listItemList = new ArrayList();
-     private Context context = null;
-     private int appWidgetId;
+    private ArrayList listItemList = new ArrayList();
+    private Context mContext = null;
+    private int appWidgetId;
+    private Cursor data = null;
 
-     public WidgetListProvider(Context context, Intent intent) {
-         this.context = context;
-         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                 AppWidgetManager.INVALID_APPWIDGET_ID);
+    private static final String[] QUOTE_COLUMNS = {
+            QuoteColumns._ID,
+            QuoteColumns.SYMBOL,
+            QuoteColumns.BIDPRICE,
+            QuoteColumns.CHANGE,
+            QuoteColumns.PERCENT_CHANGE,
+            QuoteColumns.ISUP
+    };
 
 
-     }
+    // these indices must match the projection
+    static final int INDEX_STOCK_ID = 0;
+    static final int INDEX_STOCK_SYMBOL = 1;
+    static final int INDEX_STOCK_BIDPRICE = 2;
+    static final int INDEX_STOCK_CHANGE = 3;
+    static final int INDEX_STOCK_PERCENT_CHANGE = 4;
+    static final int INDEX_STOCK_ISUP = 5;
 
+    public WidgetListProvider(Context context, Intent intent) {
+        this.mContext = context;
+        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID);
+    }
 
 
     @Override
     public void onCreate() {
+        //nothing to do
 
     }
 
     @Override
     public void onDataSetChanged() {
-
+        if (data != null) {
+            data.close();
+        }
+        // This method is called by the app hosting the widget (e.g., the launcher)
+        // However, our ContentProvider is not exported so it doesn't have access to the
+        // data. Therefore we need to clear (and finally restore) the calling identity so
+        // that calls use our process and permission
+        final long identityToken = Binder.clearCallingIdentity();
+        data = mContext.getContentResolver().query(
+                QuoteProvider.Quotes.CONTENT_URI,
+                QUOTE_COLUMNS,
+                QuoteColumns.ISCURRENT + " = ?",
+                new String[]{"1"},
+                null);
+        Binder.restoreCallingIdentity(identityToken);
     }
 
     @Override
     public void onDestroy() {
-
+        if (data != null) {
+            data.close();
+            data = null;
+        }
     }
 
     @Override
     public int getCount() {
-        return listItemList.size()!=0 ? listItemList.size():0;
+        return data == null ? 0 : data.getCount();
     }
 
     /*
@@ -62,32 +101,56 @@ public class WidgetListProvider implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public RemoteViews getViewAt(int position) {
-        final RemoteViews remoteView = new RemoteViews(
-                context.getPackageName(), R.layout.list_item_quote);
-        LauncherActivity.ListItem listItem = (LauncherActivity.ListItem) listItemList.get(position);
-        //remoteView.setTextViewText(R.id.stock_symbol, listItem.heading);
-        //remoteView.setTextViewText(R.id.change, listItem.content);
+        if (position == AdapterView.INVALID_POSITION ||
+                data == null || !data.moveToPosition(position)) {
+            return null;
+        }
 
-        return remoteView;
+        final RemoteViews views = new RemoteViews(mContext.getPackageName(),
+                R.layout.widget_list_item);
+
+
+        int quoteID = data.getInt(INDEX_STOCK_ID);
+        String quoteSymbol = data.getString(INDEX_STOCK_SYMBOL);
+        String quoteBidPrice = data.getString(INDEX_STOCK_BIDPRICE);
+        String quoteChange = data.getString(INDEX_STOCK_CHANGE);
+        String quotePercent = data.getString(INDEX_STOCK_PERCENT_CHANGE);
+        int quoteIsUp = data.getInt(INDEX_STOCK_ISUP);
+
+
+        views.setTextViewText(R.id.stock_symbol, quoteSymbol);
+        views.setTextViewText(R.id.bid_price, quoteBidPrice);
+        views.setTextViewText(R.id.change, quoteChange);
+        views.setTextViewText(R.id.percent_change, quotePercent);
+
+        final Intent fillInIntent = new Intent();
+        Uri quoteUri = QuoteProvider.Quotes.withSymbol(quoteSymbol);
+        fillInIntent.setData(quoteUri);
+        views.setOnClickFillInIntent(R.id.widget_item, fillInIntent);
+
+
+        return views;
     }
 
     @Override
     public RemoteViews getLoadingView() {
-        return null;
+        return new RemoteViews(mContext.getPackageName(), R.layout.widget_list_item);
     }
 
     @Override
     public int getViewTypeCount() {
-        return 0;
+        return 1;
     }
 
     @Override
     public long getItemId(int position) {
+        if (data.moveToPosition(position))
+            return data.getLong(INDEX_STOCK_ID);
         return position;
     }
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 }

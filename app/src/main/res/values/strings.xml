@@ -16,7 +16,4 @@
     <string name="empty__list_no_network">No stocks information available. The network is not available to fetch stocks.</string>
     <string name="no_symbol_found">No symbol found</string>
     <string name="add_symbol">Add stock symbol</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

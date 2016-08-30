@@ -104,9 +104,7 @@ public class StockTaskService extends GcmTaskService {
                 urlStringBuilder.append(URLEncoder.encode("\"" + stockInput + "\")", "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-                //TODO add code for handling error if no symbol is found
-
-            }
+                }
         }
         // finalize the URL for the API query.
         urlStringBuilder.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."

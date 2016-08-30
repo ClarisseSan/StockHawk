@@ -5,4 +5,6 @@
   <color name="material_red_700">#D50000</color>
   <color name="material_green_700">#00C853</color>
 
+  <color name="activated">#E0E0E0</color>
+  <color name="widget_color">#55000000</color>
 </resources>
