@@ -62,6 +62,7 @@
         </activity>
 
 
+        <!-- widget -->
         <receiver android:name=".widget.StocksWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

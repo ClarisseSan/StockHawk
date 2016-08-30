@@ -96,7 +96,6 @@ public class WidgetListProvider implements RemoteViewsService.RemoteViewsFactory
     /*
     *Similar to getView of Adapter where instead of View
     *we return RemoteViews
-    *
     */
 
     @Override
@@ -115,7 +114,7 @@ public class WidgetListProvider implements RemoteViewsService.RemoteViewsFactory
         String quoteBidPrice = data.getString(INDEX_STOCK_BIDPRICE);
         String quoteChange = data.getString(INDEX_STOCK_CHANGE);
         String quotePercent = data.getString(INDEX_STOCK_PERCENT_CHANGE);
-        int quoteIsUp = data.getInt(INDEX_STOCK_ISUP);
+        //int quoteIsUp = data.getInt(INDEX_STOCK_ISUP);
 
 
         views.setTextViewText(R.id.stock_symbol, quoteSymbol);

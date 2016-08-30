@@ -132,8 +132,7 @@ public class StocksWidgetProvider extends AppWidgetProvider {
 
 
     /*
-    *
-    Called the first time an instance of
+    *    Called the first time an instance of
     your widget is added to the home screen.
     * */
     @Override

@@ -15,11 +15,7 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        int appWidgetId = intent.getIntExtra(
-                AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID);
-
-        return (new WidgetListProvider(this.getApplicationContext(), intent));
+       return (new WidgetListProvider(this.getApplicationContext(), intent));
     }
 
 
