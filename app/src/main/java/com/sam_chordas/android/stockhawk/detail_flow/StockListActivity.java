@@ -36,6 +36,7 @@ import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.QuoteCursorAdapter;
 import com.sam_chordas.android.stockhawk.rest.RecyclerViewItemClickListener;
 import com.sam_chordas.android.stockhawk.rest.Utils;
+import com.sam_chordas.android.stockhawk.service.HistoryIntentService;
 import com.sam_chordas.android.stockhawk.service.StockIntentService;
 import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
@@ -70,6 +71,9 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
     private QuoteCursorAdapter mCursorAdapter;
     private Context mContext;
     private Cursor mCursor;
+
+    public static final String SYMBOL = "symbol";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +124,23 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
                 new RecyclerViewItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
+
+
+                        // The intent service is for executing immediate pulls from the Yahoo API
+                        // GCMTaskService can only schedule tasks, they cannot execute immediately
+                        mServiceIntent = new Intent(StockListActivity.this, HistoryIntentService.class);
+
+                            // Run the initialize task service so that some stocks appear upon an empty database
+                            mServiceIntent.putExtra(SYMBOL, mCursorAdapter.getSymbol(position));
+                            if (isConnected) {
+                                startService(mServiceIntent);
+                            } else {
+                                networkToast();
+                            }
+
+
+
+
                         if (mTwoPane) {
                             Bundle arguments = new Bundle();
                             arguments.putString(StockDetailFragment.ARG_SYMBOL, mCursorAdapter.getSymbol(position));

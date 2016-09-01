@@ -8,4 +8,5 @@
 
   <color name="activated">#E0E0E0</color>
   <color name="widget_color">#55000000</color>
+  <color name="white">#FFFFFF</color>
 </resources>

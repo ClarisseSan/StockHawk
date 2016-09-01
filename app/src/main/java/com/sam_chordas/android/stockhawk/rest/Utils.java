@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.data.QuoteStockHistoryColumns;
 import com.sam_chordas.android.stockhawk.detail_flow.StockListActivity;
 
 import java.util.ArrayList;
@@ -122,6 +123,49 @@ public class Utils {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+
+
+
+    public static ArrayList historyJsonToContentVals(String JSON){
+        ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
+        JSONObject jsonObject = null;
+        JSONArray resultsArray = null;
+        try{
+            jsonObject = new JSONObject(JSON);
+            if (jsonObject != null && jsonObject.length() != 0){
+                jsonObject = jsonObject.getJSONObject("query");
+
+                    resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
+
+                    if (resultsArray != null && resultsArray.length() != 0){
+                        for (int i = 0; i < resultsArray.length(); i++){
+                            jsonObject = resultsArray.getJSONObject(i);
+                            batchOperations.add(buildHistoryBatchOperation(jsonObject));
+                        }
+                    }
+                }
+
+        } catch (JSONException e){
+            Log.e(LOG_TAG, "String to JSON failed: " + e);
+        }
+        return batchOperations;
+    }
+
+    public static ContentProviderOperation buildHistoryBatchOperation(JSONObject jsonObject) {
+        ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
+                QuoteProvider.QuotesHistory.CONTENT_URI);
+        try {
+            builder.withValue(QuoteStockHistoryColumns.SYMBOL, jsonObject.getString("Symbol"));
+            builder.withValue(QuoteStockHistoryColumns.BID_DATE, jsonObject.getString("Date"));
+            builder.withValue(QuoteStockHistoryColumns.BID_PRICE, truncateBidPrice(jsonObject.getString("Adj_Close")));
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return builder.build();
     }
 
 

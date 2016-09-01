@@ -108,7 +108,7 @@ public class StockTaskService extends GcmTaskService {
                 urlStringBuilder.append(URLEncoder.encode("\"" + stockInput + "\")", "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-                }
+            }
         }
         // finalize the URL for the API query.
         urlStringBuilder.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."
@@ -148,39 +148,6 @@ public class StockTaskService extends GcmTaskService {
         return result;
     }
 
-
-    private void requestQuoteHistory(String symbol, String startDate, String endDate){
-
-        String query = "select * from yahoo.finance.historicaldata " +
-                "where symbol=\"" + symbol +
-                "\" and startDate=\"" + startDate + "\" and endDate=\"" + endDate + "\"";
-
-
-        StringBuilder urlStringBuilder = new StringBuilder();
-        try {
-
-            //create URL
-            urlStringBuilder.append(baseUrl);
-            urlStringBuilder.append(URLEncoder.encode(query, "UTF-8"));
-            urlStringBuilder.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."
-                    + "org%2Falltableswithkeys&callback=");
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        String urlString;
-        String getResponse;
-        int result = GcmNetworkManager.RESULT_FAILURE;
-
-        if (urlStringBuilder != null) {
-            urlString = urlStringBuilder.toString();
-            Log.e("HISTORY URL =======>", urlString);
-
-        }
-
-
-    }
 
 
 }
