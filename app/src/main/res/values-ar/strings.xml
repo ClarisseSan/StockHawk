@@ -12,4 +12,7 @@
     <string name="title_stock_detail">الأسهم التفاصيل</string>
     <string name="title_stock_list">مخازن</string>
     <string name="price">السعر</string>
+    <string name="stock">مخزون</string>
+
+
 </resources>

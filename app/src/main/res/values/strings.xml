@@ -17,4 +17,5 @@
     <string name="no_symbol_found">No symbol found</string>
     <string name="add_symbol">Add stock symbol</string>
     <string name="price">Price</string>
+    <string name="stock">Stock</string>
 </resources>
