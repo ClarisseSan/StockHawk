@@ -61,7 +61,7 @@ public class QuoteProvider {
             name = "QUOTE_ID",
             path = Path.QUOTES_HISTORY + "/*",
             type = "vnd.android.cursor.item/quote_history",
-            whereColumn = QuoteStockHistoryColumns.SYMBOL,
+            whereColumn = HistoryColumns.SYMBOL,
             pathSegment = 1
     )
     public static Uri withSymbol(String symbol){

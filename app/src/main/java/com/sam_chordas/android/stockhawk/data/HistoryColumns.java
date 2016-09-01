@@ -10,7 +10,7 @@ import net.simonvt.schematic.annotation.Unique;
 /**
  * Created by isse on 28/08/2016.
  */
-public class QuoteStockHistoryColumns {
+public class HistoryColumns {
     @DataType(DataType.Type.INTEGER) @PrimaryKey
     @AutoIncrement
     public static final String _ID = "_id";

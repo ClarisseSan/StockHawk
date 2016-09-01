@@ -1,10 +1,16 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.util.Pools;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +20,12 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.sam_chordas.android.stockhawk.R;
+import com.sam_chordas.android.stockhawk.data.HistoryColumns;
+import com.sam_chordas.android.stockhawk.data.QuoteColumns;
+import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,19 +35,20 @@ import java.util.ArrayList;
  * Use the {@link ChartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChartFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class ChartFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String ARG_START_DATE = "startDate";
+    private static final String ARG_SYMBOL = "symbol";
+    private static final String ARG_DURATION = "duration";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mSymbol;
+    private String mStartDAte;
+    private int mDuration;
 
-
+    private List<String> listBidPrice;
+    private List<String> listDate;
 
     LineChart chart;
+    private static final int CURSOR_LOADER_ID = 0;
 
     private OnFragmentInteractionListener mListener;
 
@@ -48,17 +59,13 @@ public class ChartFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChartFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static ChartFragment newInstance(String param1, String param2) {
+    public static ChartFragment newInstance(String symbol, String startDate, String duration) {
         ChartFragment fragment = new ChartFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_SYMBOL, symbol);
+        args.putString(ARG_START_DATE, startDate);
+        args.putString(ARG_DURATION, duration);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,8 +74,9 @@ public class ChartFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mSymbol = getArguments().getString(ARG_SYMBOL);
+            mStartDAte = getArguments().getString(ARG_START_DATE);
+            mDuration = getArguments().getInt(ARG_DURATION);
         }
     }
 
@@ -76,12 +84,12 @@ public class ChartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_chart, container, false);
+        View view = inflater.inflate(R.layout.fragment_chart, container, false);
 
         chart = (LineChart) view.findViewById(R.id.chart);
 
 
-        LineData data = new LineData(getXAxisValues(),getDataSet());
+        LineData data = new LineData(getXAxisValues(), getDataSet());
         chart.setData(data);
         chart.setDescription("YHOO Stocks");
         chart.animateXY(2000, 2000);
@@ -96,6 +104,15 @@ public class ChartFragment extends Fragment {
         chart.invalidate();
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+
+        // initialize loader
+        getActivity().getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
+
+        super.onStart();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -122,6 +139,80 @@ public class ChartFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader loader = null;
+        String sortOrder = null;
+
+        switch (mDuration){
+            case 0:
+                //1 week
+                 sortOrder = HistoryColumns._ID + " ASC LIMIT 5";
+                break;
+            case 1:
+                //2 weeks
+                sortOrder = HistoryColumns._ID + " ASC LIMIT 10";
+                break;
+            case 2:
+                //1 month
+                sortOrder = HistoryColumns._ID + " ASC LIMIT 22";
+                break;
+
+        }
+
+        if (id == CURSOR_LOADER_ID) {
+
+            loader = new CursorLoader(getContext(),
+                    QuoteProvider.QuotesHistory.CONTENT_URI,
+                    new String[]{HistoryColumns._ID,HistoryColumns.SYMBOL, HistoryColumns.BID_PRICE, HistoryColumns.BID_DATE},
+                    HistoryColumns.SYMBOL + " = ?",
+                    new String[]{mSymbol},
+                    sortOrder);
+        }
+
+        return loader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        listBidPrice = new ArrayList<>();
+        listDate = new ArrayList<>();
+        // Set the cursor in our CursorAdapter once the Cursor is loaded
+
+        if (loader.getId() == CURSOR_LOADER_ID && cursor != null && cursor.moveToFirst()) {
+
+            int columnHistoryId = cursor.getColumnIndex(HistoryColumns._ID);
+            final String id = cursor.getString(columnHistoryId);
+
+            int columnBidPriceIndex = cursor.getColumnIndex(HistoryColumns.BID_PRICE);
+            final String price = cursor.getString(columnBidPriceIndex);
+            //put price to bid list
+            listBidPrice.add(price);
+
+            int columnDateIndex = cursor.getColumnIndex(HistoryColumns.BID_DATE);
+            final String bidDate = cursor.getString(columnDateIndex);
+            //put price to bid list
+            listBidPrice.add(bidDate);
+
+
+
+        }
+
+
+        for(String price:listBidPrice){
+           System.out.println("PRICE ===========>" + price);
+        }
+        for(String bidDate:listDate){
+            System.out.println("BID DATE ===========>" + bidDate);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -136,7 +227,6 @@ public class ChartFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 
 
     private ArrayList<LineDataSet> getDataSet() {

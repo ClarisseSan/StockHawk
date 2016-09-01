@@ -2,9 +2,9 @@ package com.sam_chordas.android.stockhawk.detail_flow;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -20,7 +20,11 @@ import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.ui.ChartFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * A fragment representing a single Stock detail screen.
@@ -90,7 +94,6 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         super.onStart();
         // initialize loader
         getActivity().getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
-        super.onStart();
 
     }
 
@@ -120,14 +123,13 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        // Attach loader to our flavors database query
         // run when loader is initialized
 
         CursorLoader loader = null;
 
-        if(id==CURSOR_LOADER_ID){
+        if (id == CURSOR_LOADER_ID) {
 
-            loader =  new CursorLoader(getContext(), QuoteProvider.Quotes.CONTENT_URI,
+            loader = new CursorLoader(getContext(), QuoteProvider.Quotes.CONTENT_URI,
                     new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.NAME, QuoteColumns.BIDPRICE,
                             QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE
                     },
@@ -200,18 +202,68 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = null;
-            //create bundle to pass movieId to the fragments
-            // Bundle bundle = generateBundle();
-            //Context context = MovieDetailActivity.this;
+            //create bundle to pass symbol and startDate to the fragments
 
+            Bundle arguments = new Bundle();
+            arguments.putString("symbol", mSymbol);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date currentDate = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(currentDate);
+
+
+            //1 week
             if (position == 0) {
+                calendar.add(Calendar.DAY_OF_YEAR, -7);
+                Date newDate = calendar.getTime();
+
+                String startDate = dateFormat.format(newDate.getTime());
+
+                //put startDate in bundle
+                arguments.putString("startDate", startDate);
+                //put duration
+                arguments.putInt("duration",position);
+
+
                 fragment = new ChartFragment();
+                fragment.setArguments(arguments);
             }
+
+            //2 weeks
             if (position == 1) {
+                calendar.add(Calendar.DAY_OF_YEAR, -14);
+                Date newDate = calendar.getTime();
+
+                String startDate = dateFormat.format(newDate.getTime());
+
+                //put startDate in bundle
+                arguments.putString("startDate", startDate);
+                //put duration
+                arguments.putInt("duration",position);
+
+
+
                 fragment = new ChartFragment();
+                fragment.setArguments(arguments);
             }
+
+            //1 month
             if (position == 2) {
+
+                calendar.add(Calendar.MONTH, -1);
+                Date newDate = calendar.getTime();
+
+                String startDate = dateFormat.format(newDate.getTime());
+
+                //put startDate in bundle
+                arguments.putString("startDate", startDate);
+                arguments.putInt("duration",position);
+
+
                 fragment = new ChartFragment();
+                fragment.setArguments(arguments);
+
             }
 
             return fragment;

@@ -5,13 +5,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-import com.sam_chordas.android.stockhawk.data.QuoteStockHistoryColumns;
-import com.sam_chordas.android.stockhawk.detail_flow.StockListActivity;
+import com.sam_chordas.android.stockhawk.data.HistoryColumns;
 
 import java.util.ArrayList;
 
@@ -157,9 +154,9 @@ public class Utils {
         ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
                 QuoteProvider.QuotesHistory.CONTENT_URI);
         try {
-            builder.withValue(QuoteStockHistoryColumns.SYMBOL, jsonObject.getString("Symbol"));
-            builder.withValue(QuoteStockHistoryColumns.BID_DATE, jsonObject.getString("Date"));
-            builder.withValue(QuoteStockHistoryColumns.BID_PRICE, truncateBidPrice(jsonObject.getString("Adj_Close")));
+            builder.withValue(HistoryColumns.SYMBOL, jsonObject.getString("Symbol"));
+            builder.withValue(HistoryColumns.BID_DATE, jsonObject.getString("Date"));
+            builder.withValue(HistoryColumns.BID_PRICE, truncateBidPrice(jsonObject.getString("Adj_Close")));
 
 
         } catch (JSONException e) {
