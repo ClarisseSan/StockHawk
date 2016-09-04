@@ -214,6 +214,8 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
         //set data to chart
         LineData data = new LineData(getXAxisValues(), getDataSet());
         chart.setData(data);
+
+
     }
 
     @Override

@@ -2,19 +2,20 @@ package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.sam_chordas.android.stockhawk.data.HistoryColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-import com.sam_chordas.android.stockhawk.data.HistoryColumns;
-
-import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by sam_chordas on 10/8/15.
@@ -26,40 +27,39 @@ public class Utils {
     public static boolean showPercent = true;
 
 
-
-    public static ArrayList quoteJsonToContentVals(String JSON){
+    public static ArrayList quoteJsonToContentVals(String JSON) {
         ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
         JSONObject jsonObject = null;
         JSONArray resultsArray = null;
-        try{
+        try {
             jsonObject = new JSONObject(JSON);
-            if (jsonObject != null && jsonObject.length() != 0){
+            if (jsonObject != null && jsonObject.length() != 0) {
                 jsonObject = jsonObject.getJSONObject("query");
                 int count = Integer.parseInt(jsonObject.getString("count"));
-                if (count == 1){
+                if (count == 1) {
                     jsonObject = jsonObject.getJSONObject("results")
                             .getJSONObject("quote");
 
                     String averageDailyVolume = jsonObject.getString("AverageDailyVolume");
-                    if(!averageDailyVolume.equals("null")){
+                    if (!averageDailyVolume.equals("null")) {
                         batchOperations.add(buildBatchOperation(jsonObject));
-                    }else{
+                    } else {
                         //TODO show error message
                     }
 
 
-                } else{
+                } else {
                     resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
 
-                    if (resultsArray != null && resultsArray.length() != 0){
-                        for (int i = 0; i < resultsArray.length(); i++){
+                    if (resultsArray != null && resultsArray.length() != 0) {
+                        for (int i = 0; i < resultsArray.length(); i++) {
                             jsonObject = resultsArray.getJSONObject(i);
                             batchOperations.add(buildBatchOperation(jsonObject));
                         }
                     }
                 }
             }
-        } catch (JSONException e){
+        } catch (JSONException e) {
             Log.e(LOG_TAG, "String to JSON failed: " + e);
         }
         return batchOperations;
@@ -123,28 +123,44 @@ public class Utils {
     }
 
 
-
-
-    public static ArrayList historyJsonToContentVals(String JSON){
+    public static ArrayList historyJsonToContentVals(Context context, String JSON) {
         ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
         JSONObject jsonObject = null;
         JSONArray resultsArray = null;
-        try{
+        try {
             jsonObject = new JSONObject(JSON);
-            if (jsonObject != null && jsonObject.length() != 0){
+            if (jsonObject != null && jsonObject.length() != 0) {
                 jsonObject = jsonObject.getJSONObject("query");
 
-                    resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
+                resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
 
-                    if (resultsArray != null && resultsArray.length() != 0){
-                        for (int i = 0; i < resultsArray.length(); i++){
-                            jsonObject = resultsArray.getJSONObject(i);
+
+                if (resultsArray != null && resultsArray.length() != 0) {
+                    for (int i = 0; i < resultsArray.length(); i++) {
+                        jsonObject = resultsArray.getJSONObject(i);
+                        //check database if history already exist
+                        String symbol = jsonObject.getString("Symbol");
+                        String bidDate = jsonObject.getString("Date");
+
+                        Cursor cursor = context.getContentResolver().query(
+                                QuoteProvider.QuotesHistory.CONTENT_URI,
+                                new String[]{HistoryColumns.SYMBOL, HistoryColumns.BID_DATE},
+                                HistoryColumns.SYMBOL + " = ?" + " AND " + HistoryColumns.BID_DATE + " = ?",
+                                new String[]{symbol, bidDate},
+                                null
+                        );
+
+                        //if symbol and date are not yet inserted, then add to db
+                        if (cursor.getCount() == 0){
                             batchOperations.add(buildHistoryBatchOperation(jsonObject));
                         }
+
+                        cursor.close();
                     }
                 }
+            }
 
-        } catch (JSONException e){
+        } catch (JSONException e) {
             Log.e(LOG_TAG, "String to JSON failed: " + e);
         }
         return batchOperations;

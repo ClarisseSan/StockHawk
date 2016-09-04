@@ -96,6 +96,8 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
         isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
+        checkPlayServices();
+
 
         // The intent service is for executing immediate pulls from the Yahoo API
         // GCMTaskService can only schedule tasks, they cannot execute immediately

@@ -35,9 +35,6 @@ public class StockTaskService extends GcmTaskService {
     private Context mContext;
     private StringBuilder mStoredSymbols = new StringBuilder();
     private boolean isUpdate;
-    private final String baseUrl = "https://query.yahooapis.com/v1/public/yql?q=";
-
-
 
     public StockTaskService() {
     }
@@ -65,8 +62,7 @@ public class StockTaskService extends GcmTaskService {
         StringBuilder urlStringBuilder = new StringBuilder();
         try {
             // Base URL for the Yahoo query
-
-            urlStringBuilder.append(baseUrl);
+            urlStringBuilder.append("https://query.yahooapis.com/v1/public/yql?q=");
             urlStringBuilder.append(URLEncoder.encode("select * from yahoo.finance.quotes where symbol "
                     + "in (", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
@@ -103,7 +99,7 @@ public class StockTaskService extends GcmTaskService {
         } else if (params.getTag().equals("add")) {
             isUpdate = false;
             // get symbol from params.getExtra and build query
-            String stockInput = params.getExtras().getString("symbol");
+            String stockInput = params.getExtras().getString("symbol").toUpperCase();
             try {
                 urlStringBuilder.append(URLEncoder.encode("\"" + stockInput + "\")", "UTF-8"));
             } catch (UnsupportedEncodingException e) {

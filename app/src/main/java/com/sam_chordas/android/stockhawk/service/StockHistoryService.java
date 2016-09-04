@@ -100,7 +100,7 @@ public class StockHistoryService extends GcmTaskService {
                 getResponse = fetchData(urlString);
                 result = GcmNetworkManager.RESULT_SUCCESS;
 
-                mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, Utils.historyJsonToContentVals(getResponse));
+                mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, Utils.historyJsonToContentVals(mContext,getResponse));
 
 
             } catch (IOException e) {
