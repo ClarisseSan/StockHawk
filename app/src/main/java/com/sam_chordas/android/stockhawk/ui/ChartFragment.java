@@ -92,7 +92,7 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
         chart.getXAxis().setTextColor(Color.rgb(255, 255, 255));
         chart.getLegend().setTextColor(Color.rgb(255, 255, 255));
 
-
+        //refresh chart
         chart.invalidate();
 
         return view;
@@ -215,7 +215,12 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
         LineData data = new LineData(getXAxisValues(), getDataSet());
         chart.setData(data);
 
+        // let the chart know it's data has changed
+        data.notifyDataChanged();
+        chart.notifyDataSetChanged();
 
+        //refresh chart
+        chart.invalidate();
     }
 
     @Override
@@ -236,6 +241,8 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
 
         }
 
+
+
         /* Dataset --> The set of data you have to draw in your chart */
 
         LineDataSet lineDataSet1 = new LineDataSet(valueSet1, getString(R.string.price));
@@ -243,10 +250,8 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
         //lineDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
         lineDataSet1.setDrawFilled(true);
 
-
         dataSets = new ArrayList<>();
         dataSets.add(lineDataSet1);
-
 
         return dataSets;
     }
@@ -260,7 +265,6 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
             xAxis.add(bidDate);
 
         }
-
         return xAxis;
     }
 
@@ -269,7 +273,7 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
