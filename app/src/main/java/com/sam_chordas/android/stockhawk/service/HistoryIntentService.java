@@ -65,16 +65,9 @@ public class HistoryIntentService extends IntentService {
         // We can call OnRunTask from the intent service to force it to run immediately instead of
         // scheduling a task.
        StockHistoryService stockTaskService = new StockHistoryService(this);
-       int result = stockTaskService.onRunTask(new TaskParams("args", args));
+       stockTaskService.onRunTask(new TaskParams("args", args));
 
-
-        publishResults(result);
     }
 
-    //use this method to send results (if successfully fetched data)to StockListActivity
-    private void publishResults(int result) {
-        Intent intent = new Intent(NOTIFICATION);
-        intent.putExtra(RESULT, result);
-        sendBroadcast(intent);
-    }
+
 }

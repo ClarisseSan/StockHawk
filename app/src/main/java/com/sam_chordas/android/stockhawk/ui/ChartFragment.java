@@ -200,6 +200,17 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
                 //put price to bid list
                 listDate.add(bidDate);
             }
+
+            //set data to chart
+            LineData data = new LineData(getXAxisValues(), getDataSet());
+            chart.setData(data);
+
+            // let the chart know it's data has changed
+            data.notifyDataChanged();
+            chart.notifyDataSetChanged();
+
+            //refresh chart
+            chart.invalidate();
         }
 
 
@@ -211,16 +222,7 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
         }
 
 
-        //set data to chart
-        LineData data = new LineData(getXAxisValues(), getDataSet());
-        chart.setData(data);
 
-        // let the chart know it's data has changed
-        data.notifyDataChanged();
-        chart.notifyDataSetChanged();
-
-        //refresh chart
-        chart.invalidate();
     }
 
     @Override

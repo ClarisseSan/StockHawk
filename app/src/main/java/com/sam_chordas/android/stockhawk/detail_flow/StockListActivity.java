@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -54,10 +53,13 @@ import com.sam_chordas.android.stockhawk.ui.ChartFragment;
  */
 public class StockListActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, ChartFragment.OnFragmentInteractionListener {
 
+    public static final String SYMBOL = "symbol";
     private static final String LOG_TAG = StockListActivity.class.getSimpleName();
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final int CURSOR_LOADER_ID = 0;
     boolean isConnected;
+    //for receiving results sent by the gcmtaskservice
+    BroadcastReceiver receiver;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -73,31 +75,6 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
     private QuoteCursorAdapter mCursorAdapter;
     private Context mContext;
     private Cursor mCursor;
-
-    public static final String SYMBOL = "symbol";
-    private int taskResult;
-
-
-    //for receiving results sent by the gcmtaskservice
-    BroadcastReceiver receiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                int resultCode = bundle.getInt(HistoryIntentService.RESULT);
-                if (resultCode == GcmNetworkManager.RESULT_SUCCESS) {
-                    taskResult = 1;
-                } else {
-                    taskResult = 0;
-                    Toast.makeText(StockListActivity.this, "Fetching stock history failed",
-                            Toast.LENGTH_LONG).show();
-
-                }
-            }
-        }
-    };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,9 +114,6 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
         }
 
 
-        registerReceiver(receiver, new IntentFilter(
-                HistoryIntentService.NOTIFICATION));
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.stock_list);
 
         //set empty view
@@ -159,18 +133,15 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
                         // GCMTaskService can only schedule tasks, they cannot execute immediately
                         mServiceIntent = new Intent(StockListActivity.this, HistoryIntentService.class);
 
-                        // Run the initialize task service so that some stocks appear upon an empty database
+                        // Run the initialize task service so to gather stock history
                         mServiceIntent.putExtra(SYMBOL, mCursorAdapter.getSymbol(position));
                         if (isConnected) {
                             startService(mServiceIntent);
-                            if (taskResult == 1) {
-                                showDetailActivity(position, v);
-                            }
-
                         } else {
                             networkToast();
-                            showDetailActivity(position, v);
                         }
+
+                        showDetailActivity(position, v);
 
 
                     }
