@@ -10,6 +10,7 @@ import android.util.Log;
 import com.sam_chordas.android.stockhawk.data.HistoryColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.detail_flow.StockListActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

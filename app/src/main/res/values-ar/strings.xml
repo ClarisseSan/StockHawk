@@ -13,6 +13,8 @@
     <string name="title_stock_list">مخازن</string>
     <string name="price">السعر</string>
     <string name="stock">مخزون</string>
+    <string name="unsupported_device">لا يتم اعتماد هذا الجهاز.</string>
+    <string name="saved_stock">يتم حفظ هذه الأسهم بالفعل!</string>
 
 
 </resources>

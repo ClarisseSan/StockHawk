@@ -18,4 +18,6 @@
     <string name="add_symbol">Add stock symbol</string>
     <string name="price">Price</string>
     <string name="stock">Stock</string>
+    <string name="unsupported_device">This device is not supported.</string>
+    <string name="saved_stock">This stock is already saved!</string>
 </resources>

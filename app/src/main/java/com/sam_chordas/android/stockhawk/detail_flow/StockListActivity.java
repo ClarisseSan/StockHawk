@@ -169,7 +169,7 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
                                             new String[]{input.toString()}, null);
                                     if (c.getCount() != 0) {
                                         Toast toast =
-                                                Toast.makeText(StockListActivity.this, "This stock is already saved!",
+                                                Toast.makeText(StockListActivity.this, getString(R.string.saved_stock),
                                                         Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                         toast.show();
@@ -345,7 +345,7 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
                 apiAvailability.getErrorDialog(this, resultCode,
                         PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
-                Log.i(LOG_TAG, "This device is not supported.");
+                Log.i(LOG_TAG, getString(R.string.unsupported_device));
                 finish();
             }
             return false;
