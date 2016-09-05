@@ -1,9 +1,11 @@
 package com.sam_chordas.android.stockhawk.detail_flow;
 
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -73,6 +75,28 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
     private Cursor mCursor;
 
     public static final String SYMBOL = "symbol";
+    private int taskResult;
+
+
+    //for receiving results sent by the gcmtaskservice
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                int resultCode = bundle.getInt(HistoryIntentService.RESULT);
+                if (resultCode == GcmNetworkManager.RESULT_SUCCESS) {
+                    taskResult = 1;
+                } else {
+                    taskResult = 0;
+                    Toast.makeText(StockListActivity.this, "Fetching stock history failed",
+                            Toast.LENGTH_LONG).show();
+
+                }
+            }
+        }
+    };
 
 
     @Override
@@ -113,6 +137,9 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
         }
 
 
+        registerReceiver(receiver, new IntentFilter(
+                HistoryIntentService.NOTIFICATION));
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.stock_list);
 
         //set empty view
@@ -132,33 +159,17 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
                         // GCMTaskService can only schedule tasks, they cannot execute immediately
                         mServiceIntent = new Intent(StockListActivity.this, HistoryIntentService.class);
 
-                            // Run the initialize task service so that some stocks appear upon an empty database
-                            mServiceIntent.putExtra(SYMBOL, mCursorAdapter.getSymbol(position));
-                            if (isConnected) {
-                                startService(mServiceIntent);
-                            } else {
-                                networkToast();
+                        // Run the initialize task service so that some stocks appear upon an empty database
+                        mServiceIntent.putExtra(SYMBOL, mCursorAdapter.getSymbol(position));
+                        if (isConnected) {
+                            startService(mServiceIntent);
+                            if (taskResult == 1) {
+                                showDetailActivity(position, v);
                             }
 
-
-
-
-                        if (mTwoPane) {
-                            Bundle arguments = new Bundle();
-                            arguments.putString(StockDetailFragment.ARG_SYMBOL, mCursorAdapter.getSymbol(position));
-
-                            StockDetailFragment fragment = new StockDetailFragment();
-                            fragment.setArguments(arguments);
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.stock_detail_container, fragment)
-                                    .commit();
-
                         } else {
-                            Context context = v.getContext();
-                            Intent intent = new Intent(context, StockDetailActivity.class);
-                            intent.putExtra(StockDetailFragment.ARG_SYMBOL, mCursorAdapter.getSymbol(position));
-
-                            context.startActivity(intent);
+                            networkToast();
+                            showDetailActivity(position, v);
                         }
 
 
@@ -234,6 +245,26 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
         }
 
 
+    }
+
+    private void showDetailActivity(int position, View v) {
+        if (mTwoPane) {
+            Bundle arguments = new Bundle();
+            arguments.putString(StockDetailFragment.ARG_SYMBOL, mCursorAdapter.getSymbol(position));
+
+            StockDetailFragment fragment = new StockDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.stock_detail_container, fragment)
+                    .commit();
+
+        } else {
+            Context context = v.getContext();
+            Intent intent = new Intent(context, StockDetailActivity.class);
+            intent.putExtra(StockDetailFragment.ARG_SYMBOL, mCursorAdapter.getSymbol(position));
+
+            context.startActivity(intent);
+        }
     }
 
 
@@ -354,4 +385,6 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+
 }

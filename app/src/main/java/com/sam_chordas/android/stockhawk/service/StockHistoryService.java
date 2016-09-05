@@ -28,20 +28,19 @@ public class StockHistoryService extends GcmTaskService {
 
     private OkHttpClient client = new OkHttpClient();
     private Context mContext;
-    private StringBuilder mStoredSymbols = new StringBuilder();
-    private boolean isUpdate;
 
     private String mSymbol;
     private String mStartDate;
     private String mEndDate;
 
-    public StockHistoryService(){}
+    public StockHistoryService() {
+    }
 
     public StockHistoryService(Context mContext) {
         this.mContext = mContext;
     }
 
-    String fetchData(String url) throws IOException{
+    String fetchData(String url) throws IOException {
 
         Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();
@@ -50,15 +49,12 @@ public class StockHistoryService extends GcmTaskService {
     }
 
 
-
-
-
     @Override
     public int onRunTask(TaskParams taskParams) {
 
-       Cursor initQueryCursor;
+        Cursor initQueryCursor;
 
-        if(mContext==null) {
+        if (mContext == null) {
             mContext = this;
         }
 
@@ -78,7 +74,7 @@ public class StockHistoryService extends GcmTaskService {
 
         StringBuilder urlStringBuilder = new StringBuilder();
 
-        try{
+        try {
             urlStringBuilder.append(baseUrl);
             urlStringBuilder.append(URLEncoder.encode(query, "UTF-8"));
             urlStringBuilder.append(returnFormat);
@@ -92,15 +88,15 @@ public class StockHistoryService extends GcmTaskService {
         int result = GcmNetworkManager.RESULT_FAILURE;
 
 
-        if(urlStringBuilder!=null){
+        if (urlStringBuilder != null) {
             urlString = urlStringBuilder.toString();
-            Log.e(LOG_TAG,"MY URL =============>" + urlString);
+            Log.e(LOG_TAG, "MY URL =============>" + urlString);
 
-            try{
+            try {
                 getResponse = fetchData(urlString);
                 result = GcmNetworkManager.RESULT_SUCCESS;
 
-                mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, Utils.historyJsonToContentVals(mContext,getResponse));
+                mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, Utils.historyJsonToContentVals(mContext, getResponse));
 
 
             } catch (IOException e) {

@@ -17,6 +17,10 @@ import java.util.Locale;
  * Created by isse on 01/09/2016.
  */
 public class HistoryIntentService extends IntentService {
+
+    public static final String RESULT = "result";
+    public static final String NOTIFICATION = "com.sam_chordas.android.stockhawk";//package name
+
     public HistoryIntentService(String name) {
         super(name);
     }
@@ -24,6 +28,11 @@ public class HistoryIntentService extends IntentService {
         super(StockIntentService.class.getName());
     }
 
+
+    /*
+    * This method is where your processing occurs. Any data necessary for each processing request can be packaged
+     * in the intent extras,like so (imports, comments, exception handling removed for code clarity)
+    * */
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(HistoryIntentService.class.getSimpleName(), "History Intent Service");
@@ -56,7 +65,16 @@ public class HistoryIntentService extends IntentService {
         // We can call OnRunTask from the intent service to force it to run immediately instead of
         // scheduling a task.
        StockHistoryService stockTaskService = new StockHistoryService(this);
-       stockTaskService.onRunTask(new TaskParams("args", args));
+       int result = stockTaskService.onRunTask(new TaskParams("args", args));
 
+
+        publishResults(result);
+    }
+
+    //use this method to send results (if successfully fetched data)to StockListActivity
+    private void publishResults(int result) {
+        Intent intent = new Intent(NOTIFICATION);
+        intent.putExtra(RESULT, result);
+        sendBroadcast(intent);
     }
 }

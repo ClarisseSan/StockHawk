@@ -1,5 +1,7 @@
 package com.sam_chordas.android.stockhawk.detail_flow;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.service.StockHistoryService;
 import com.sam_chordas.android.stockhawk.ui.ChartFragment;
 
 import java.text.SimpleDateFormat;
@@ -96,6 +99,8 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         getActivity().getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
 
     }
+
+
 
     private void setupTabs(View rootView) {
 
@@ -226,8 +231,10 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 arguments.putInt("duration",position);
 
 
-                fragment = new ChartFragment();
-                fragment.setArguments(arguments);
+                    fragment = new ChartFragment();
+                    fragment.setArguments(arguments);
+
+
             }
 
             //2 weeks
@@ -242,10 +249,9 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 //put duration
                 arguments.putInt("duration",position);
 
-
-
                 fragment = new ChartFragment();
                 fragment.setArguments(arguments);
+
             }
 
             //1 month
@@ -259,7 +265,6 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 //put startDate in bundle
                 arguments.putString("startDate", startDate);
                 arguments.putInt("duration",position);
-
 
                 fragment = new ChartFragment();
                 fragment.setArguments(arguments);
