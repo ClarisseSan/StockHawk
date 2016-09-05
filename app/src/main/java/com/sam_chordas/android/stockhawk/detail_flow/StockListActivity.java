@@ -75,6 +75,7 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
     private QuoteCursorAdapter mCursorAdapter;
     private Context mContext;
     private Cursor mCursor;
+    private Intent  mHistoryServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,12 +132,12 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
 
                         // The intent service is for executing immediate pulls from the Yahoo API
                         // GCMTaskService can only schedule tasks, they cannot execute immediately
-                        mServiceIntent = new Intent(StockListActivity.this, HistoryIntentService.class);
+                        mHistoryServiceIntent = new Intent(StockListActivity.this, HistoryIntentService.class);
 
                         // Run the initialize task service so to gather stock history
-                        mServiceIntent.putExtra(SYMBOL, mCursorAdapter.getSymbol(position));
+                        mHistoryServiceIntent.putExtra(SYMBOL, mCursorAdapter.getSymbol(position));
                         if (isConnected) {
-                            startService(mServiceIntent);
+                            startService(mHistoryServiceIntent);
                         } else {
                             networkToast();
                         }
