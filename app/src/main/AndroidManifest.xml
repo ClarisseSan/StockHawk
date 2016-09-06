@@ -78,6 +78,8 @@
         <receiver android:name=".widget.StocksWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.sam_chordas.android.stockhawk.DATABASE_CHANGED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
             </intent-filter>
 
             <!-- This specifies the widget provider info -->

@@ -31,8 +31,10 @@ import com.sam_chordas.android.stockhawk.detail_flow.StockListActivity;
 public class StocksWidgetProvider extends AppWidgetProvider {
 
     public static final String UPDATE_STOCKS_ACTION = "android.appwidget.action.APPWIDGET_UPDATE";
+    public static final String UPDATE_STOCKS_ACTION_DATE = "android.intent.action.DATE_CHANGED";
+    public static final String UPDATE_STOCKS_ACTION_DATABASE = "com.sam_chordas.android.stockhawk.DATABASE_CHANGED";
 
-    public static final String EXTRA_ITEM = "com.example.edockh.EXTRA_ITEM";
+
 
     private final String LOG_TAG = StocksWidgetProvider.class.getSimpleName();
 
@@ -48,10 +50,12 @@ public class StocksWidgetProvider extends AppWidgetProvider {
 
 
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
+        String action = intent.getAction();
 
-        if (intent.getAction().equals(UPDATE_STOCKS_ACTION)) {
+        if (action.equals(UPDATE_STOCKS_ACTION) || action.equals(UPDATE_STOCKS_ACTION_DATE) || action.equals(UPDATE_STOCKS_ACTION_DATABASE)) {
             int appWidgetIds[] = manager.getAppWidgetIds(new ComponentName(context, StocksWidgetProvider.class));
             Log.e(LOG_TAG, "received :   " + intent.getAction());
+            this.onUpdate(context,manager,appWidgetIds);
             manager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.list_view);
         }
 

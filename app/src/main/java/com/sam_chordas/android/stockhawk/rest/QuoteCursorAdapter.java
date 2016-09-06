@@ -1,6 +1,7 @@
 package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -16,6 +17,7 @@ import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.touch_helper.ItemTouchHelperAdapter;
 import com.sam_chordas.android.stockhawk.touch_helper.ItemTouchHelperViewHolder;
+import com.sam_chordas.android.stockhawk.widget.StocksWidgetProvider;
 
 /**
  * Created by sam_chordas on 10/6/15.
@@ -83,6 +85,9 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
         //delete history when symbol is deleted
         mContext.getContentResolver().delete(QuoteProvider.QuotesHistory.withSymbol(symbol),null,null);
         notifyItemRemoved(position);
+        //notify widget that there's a change in db
+        mContext.sendBroadcast(new Intent(StocksWidgetProvider.UPDATE_STOCKS_ACTION_DATABASE));
+
     }
 
     @Override

@@ -25,7 +25,6 @@ import java.util.ArrayList;
  */
 
 public class WidgetListProvider implements RemoteViewsService.RemoteViewsFactory {
-    private ArrayList listItemList = new ArrayList();
     private Context mContext = null;
     private int appWidgetId;
     private Cursor data = null;
