@@ -20,4 +20,7 @@
     <string name="stock">Stock</string>
     <string name="unsupported_device">This device is not supported.</string>
     <string name="saved_stock">This stock is already saved!</string>
+    <string name="one_week">1 Week</string>
+    <string name="two_weeks">2 Weeks</string>
+    <string name="one_month">1 Month</string>
 </resources>

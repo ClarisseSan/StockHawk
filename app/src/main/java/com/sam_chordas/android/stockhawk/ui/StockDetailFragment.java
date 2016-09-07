@@ -177,7 +177,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
 
     public class SamplePagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"1 week", "2 weeks", "1 month"};
+        private final String[] TITLES = {getString(R.string.one_week), getString(R.string.two_weeks), getString(R.string.one_month)};
 
         private final ArrayList<String> mTitles;
 

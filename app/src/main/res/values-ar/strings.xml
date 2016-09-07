@@ -15,6 +15,9 @@
     <string name="stock">مخزون</string>
     <string name="unsupported_device">لا يتم اعتماد هذا الجهاز.</string>
     <string name="saved_stock">يتم حفظ هذه الأسهم بالفعل!</string>
+    <string name="one_month">شهر واحد</string>
+    <string name="one_week">اسبوع واحد</string>
+    <string name="two_weeks">إسبوعين</string>
 
 
 </resources>
