@@ -17,6 +17,8 @@
     android:layout_marginRight="16dp"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
+    android:paddingBottom="48dp"
+    android:clipToPadding="false"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.StockListActivity"/>
 
@@ -48,7 +50,7 @@
         fab:fab_shadow="true"
         fab:fab_type="normal"
         fab:layout_anchor="recycler_view"
-        fab:layout_anchorGravity="bottom | end"
+        fab:layout_anchorGravity="bottom|right|end"
         />
 
 </FrameLayout>
