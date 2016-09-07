@@ -150,6 +150,7 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setContentDescription(getString(R.string.add_symbol));
         fab.attachToRecyclerView(recyclerView);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
