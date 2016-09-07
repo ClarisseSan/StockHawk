@@ -3,5 +3,5 @@
     android:id="@+id/stock_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sam_chordas.android.stockhawk.detail_flow.StockDetailActivity"
+    tools:context=".ui.StockDetailActivity"
     tools:ignore="MergeRootFrame" />

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.gcm.TaskParams;
-import com.sam_chordas.android.stockhawk.detail_flow.StockListActivity;
+import com.sam_chordas.android.stockhawk.ui.StockListActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

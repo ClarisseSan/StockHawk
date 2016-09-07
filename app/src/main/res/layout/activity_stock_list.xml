@@ -18,7 +18,7 @@
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.sam_chordas.android.stockhawk.detail_flow.StockListActivity"/>
+    tools:context=".ui.StockListActivity"/>
 
     <!-- empty list -->
     <TextView

@@ -9,7 +9,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="com.sam_chordas.android.stockhawk.detail_flow.StockListActivity">
+    tools:context=".ui.StockListActivity">
 
     <!--
     This layout is a two-pane layout for the Stocks
@@ -32,7 +32,7 @@
         android:layout_marginEnd="5dp"
 
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.sam_chordas.android.stockhawk.detail_flow.StockListActivity"
+        tools:context=".ui.StockListActivity"
         android:layout_weight="2" />
 
 

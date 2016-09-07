@@ -1,4 +1,4 @@
-package com.sam_chordas.android.stockhawk.detail_flow;
+package com.sam_chordas.android.stockhawk.ui;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.sam_chordas.android.stockhawk.R;
-import com.sam_chordas.android.stockhawk.ui.ChartFragment;
 
 /**
  * An activity representing a single Stock detail screen. This

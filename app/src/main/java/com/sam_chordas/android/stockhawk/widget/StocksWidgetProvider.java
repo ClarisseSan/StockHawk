@@ -14,8 +14,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.sam_chordas.android.stockhawk.R;
-import com.sam_chordas.android.stockhawk.detail_flow.StockDetailActivity;
-import com.sam_chordas.android.stockhawk.detail_flow.StockListActivity;
+import com.sam_chordas.android.stockhawk.ui.StockDetailActivity;
+import com.sam_chordas.android.stockhawk.ui.StockListActivity;
 
 /**
  * create MyWidgetProvider class to be a sub-class of AppWidgetProvider.

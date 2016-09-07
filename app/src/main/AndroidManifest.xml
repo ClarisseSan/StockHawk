@@ -23,10 +23,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:supportsRtl="true">
-        <activity
-            android:name=".ui.MyStocksActivity"
-            android:label="@string/app_name">
-        </activity>
 
         <service
             android:name=".service.StockTaskService"
@@ -54,7 +50,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".detail_flow.StockListActivity"
+            android:name=".ui.StockListActivity"
             android:label="@string/title_stock_list">
 
             <intent-filter>
@@ -64,13 +60,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".detail_flow.StockDetailActivity"
+            android:name=".ui.StockDetailActivity"
             android:label="@string/title_stock_detail"
-            android:parentActivityName=".detail_flow.StockListActivity"
+            android:parentActivityName=".ui.StockListActivity"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sam_chordas.android.stockhawk.detail_flow.StockListActivity" />
+                android:value=".ui.StockListActivity" />
         </activity>
 
 

@@ -1,4 +1,4 @@
-package com.sam_chordas.android.stockhawk.detail_flow;
+package com.sam_chordas.android.stockhawk.ui;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-import com.sam_chordas.android.stockhawk.ui.ChartFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
