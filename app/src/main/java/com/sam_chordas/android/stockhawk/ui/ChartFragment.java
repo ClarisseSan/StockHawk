@@ -18,10 +18,12 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ValueFormatter;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.HistoryColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -209,6 +211,10 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
             data.notifyDataChanged();
             chart.notifyDataSetChanged();
 
+            // format values
+            data.setValueFormatter(new MyValueFormatter());
+
+
             //refresh chart
             chart.invalidate();
         }
@@ -220,7 +226,6 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
         for (String bidDate : listDate) {
             System.out.println("BID DATE ===========>" + bidDate);
         }
-
 
 
     }
@@ -283,5 +288,24 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+/*
+*
+* The IValueFormatter interface can be used to create custom-made formatter classes that allow
+ * to format values within the chart (from DataSets) in a specific way before drawing them.
+ */
+
+    public class MyValueFormatter implements ValueFormatter {
+        private DecimalFormat mFormat;
+
+        public MyValueFormatter() {
+            mFormat = new DecimalFormat("###,###,##0.00"); // use two decimal
+        }
+
+        @Override
+        public String getFormattedValue(float value) {
+            return mFormat.format(value);
+        }
     }
 }

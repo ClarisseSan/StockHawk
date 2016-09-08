@@ -151,7 +151,7 @@ public class Utils {
                         );
 
                         //if symbol and date are not yet inserted, then add to db
-                        if (cursor.getCount() == 0){
+                        if (cursor.getCount() == 0) {
                             batchOperations.add(buildHistoryBatchOperation(jsonObject));
                         }
 
