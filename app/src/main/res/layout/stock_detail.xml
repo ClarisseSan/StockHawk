@@ -15,7 +15,12 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="5dp"
             app:cardElevation="15dp"
-            android:layout_margin="@dimen/stock_detail_margin"
+            android:layout_marginTop="@dimen/stock_detail_margin"
+            android:layout_marginBottom="@dimen/stock_detail_margin"
+            android:layout_marginStart="@dimen/heading_item_extra_padding"
+            android:layout_marginEnd="@dimen/heading_item_extra_padding"
+            android:layout_marginLeft="@dimen/heading_item_extra_padding"
+            android:layout_marginRight="@dimen/heading_item_extra_padding"
             >
 
 
@@ -59,7 +64,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@android:color/holo_orange_dark"
-                    app:cardCornerRadius="5dp">
+                    app:cardCornerRadius="5dp"
+                    android:layout_margin="5dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -116,7 +122,7 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:tabBackground="@color/material_blue_500"
         app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="@android:color/secondary_text_light_nodisable"
+        app:tabTextColor="@android:color/white"
         app:tabMaxWidth="0dp"
         app:tabGravity="fill"
         app:layout_collapseMode="pin"

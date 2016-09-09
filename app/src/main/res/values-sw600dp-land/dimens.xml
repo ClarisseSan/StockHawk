@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="stock_detail_padding">18dp</dimen>
+
+    <dimen name="heading_item_extra_padding">65dp</dimen>
 
 </resources>
