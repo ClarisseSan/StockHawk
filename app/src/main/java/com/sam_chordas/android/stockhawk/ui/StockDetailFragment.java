@@ -91,8 +91,8 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onStart() {
         super.onStart();
-        // initialize loader
-        getActivity().getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
+        // initialize this fragment's loader
+        getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
 
     }
 
