@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -41,13 +42,15 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
     private static final String ARG_SYMBOL = "symbol";
     private static final String ARG_DURATION = "duration";
     private static final int CURSOR_LOADER_ID = 0;
-    LineChart chart;
+    private LineChart chart;
     private String mSymbol;
     private String mStartDAte;
     private int mDuration;
     private List<String> listBidPrice;
     private List<String> listDate;
     private OnFragmentInteractionListener mListener;
+    private YAxis leftAxis;
+    private YAxis rightAxis;
 
     public ChartFragment() {
         // Required empty public constructor
@@ -88,11 +91,23 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
         chart.setDescription(mSymbol + getString(R.string.stock));
         chart.animateXY(2000, 2000);
 
+        //scale Y-axis
+        leftAxis = chart.getAxisLeft();
+        rightAxis = chart.getAxisRight();
+
         //chart label color
-        chart.getAxisLeft().setTextColor(Color.rgb(255, 255, 255));
-        chart.getAxisRight().setTextColor(Color.rgb(255, 255, 255));
+        leftAxis.setTextColor(Color.rgb(255, 255, 255));
+        rightAxis.setTextColor(Color.rgb(255, 255, 255));
         chart.getXAxis().setTextColor(Color.rgb(255, 255, 255));
         chart.getLegend().setTextColor(Color.rgb(255, 255, 255));
+
+
+        //don't start at 0
+        leftAxis.setStartAtZero(false);
+
+        //set chart spacing
+        leftAxis.setSpaceTop(50f);
+        leftAxis.setSpaceBottom(50f);
 
         //refresh chart
         chart.invalidate();
@@ -211,9 +226,31 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
             data.notifyDataChanged();
             chart.notifyDataSetChanged();
 
-            // format values
-            data.setValueFormatter(new MyValueFormatter());
+            //scale Y-axis
+            YAxis leftAxis = chart.getAxisLeft();
 
+            //don't start at 0
+            leftAxis.setStartAtZero(false);
+
+            //get min and max values from arraylist
+            String minVal = Collections.min(listBidPrice);
+            String maxVal = Collections.max(listBidPrice);
+
+            Log.i("MINIMUM VALUE_------>", minVal);
+            Log.i("MAXIMUM VALUE_------>", maxVal);
+
+            Float minFloat = Float.valueOf(minVal);
+            Float maxFloat = Float.valueOf(maxVal);
+
+            Log.e("MINIMUM FLOAT------>", minFloat.toString());
+            Log.e("MAXIMUM FLOAT------>", maxFloat.toString());
+
+            //set min and max values for better scaling
+            leftAxis.setAxisMaxValue(maxFloat);
+            leftAxis.setAxisMinValue(minFloat);
+
+            // format values into two decimal points only
+            data.setValueFormatter(new MyValueFormatter());
 
             //refresh chart
             chart.invalidate();
