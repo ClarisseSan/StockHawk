@@ -105,7 +105,9 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         ViewPager mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
 
         // Assigning ViewPager View and setting the adapter
-        SamplePagerAdapter adapter = new SamplePagerAdapter(getFragmentManager(), numberOfTabs);
+        //If this Fragment is a child of another Fragment,
+        // the FragmentManager returned here will be the parent's getChildFragmentManager().
+        SamplePagerAdapter adapter = new SamplePagerAdapter(getChildFragmentManager(), numberOfTabs);
         mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
