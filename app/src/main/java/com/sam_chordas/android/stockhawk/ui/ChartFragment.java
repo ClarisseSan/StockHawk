@@ -104,10 +104,13 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
 
         //don't start at 0
         leftAxis.setStartAtZero(false);
+        rightAxis.setStartAtZero(false);
 
         //set chart spacing
         leftAxis.setSpaceTop(50f);
         leftAxis.setSpaceBottom(50f);
+        rightAxis.setSpaceTop(50f);
+        rightAxis.setSpaceBottom(50f);
 
         //refresh chart
         chart.invalidate();
@@ -228,9 +231,11 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
 
             //scale Y-axis
             YAxis leftAxis = chart.getAxisLeft();
+            YAxis rightAxis = chart.getAxisRight();
 
             //don't start at 0
             leftAxis.setStartAtZero(false);
+            rightAxis.setStartAtZero(false);
 
             //get min and max values from arraylist
             String minVal = Collections.min(listBidPrice);
@@ -248,6 +253,8 @@ public class ChartFragment extends Fragment implements LoaderManager.LoaderCallb
             //set min and max values for better scaling
             leftAxis.setAxisMaxValue(maxFloat);
             leftAxis.setAxisMinValue(minFloat);
+            rightAxis.setAxisMaxValue(maxFloat);
+            rightAxis.setAxisMinValue(minFloat);
 
             // format values into two decimal points only
             data.setValueFormatter(new MyValueFormatter());
