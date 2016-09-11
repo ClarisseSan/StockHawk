@@ -21,8 +21,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
         <service
             android:name=".service.StockTaskService"
@@ -62,8 +62,7 @@
         <activity
             android:name=".ui.StockDetailActivity"
             android:label="@string/title_stock_detail"
-            android:parentActivityName=".ui.StockListActivity"
-            >
+            android:parentActivityName=".ui.StockListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.StockListActivity" />
@@ -87,8 +86,8 @@
         <!-- The service serving the RemoteViews to the collection widget -->
         <service
             android:name=".widget.WidgetRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"
-            android:exported="false" />
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
 
     </application>
