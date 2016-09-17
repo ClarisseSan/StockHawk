@@ -112,6 +112,9 @@ public class StockHistoryService extends GcmTaskService {
                 getResponse = fetchData(urlString);
                 result = GcmNetworkManager.RESULT_SUCCESS;
 
+                //delete all history
+                mContext.getContentResolver().delete(QuoteProvider.QuotesHistory.withSymbol(mSymbol),null,null);
+                //then add history again to update
                 mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, Utils.historyJsonToContentVals(mContext, getResponse));
 
 
