@@ -116,9 +116,7 @@ public class StockHistoryService extends GcmTaskService {
                 mContext.getContentResolver().delete(QuoteProvider.QuotesHistory.withSymbol(mSymbol),null,null);
                 //then add history again to update
                 mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, Utils.historyJsonToContentVals(mContext, getResponse));
-
-
-            } catch (IOException e) {
+             } catch (IOException e) {
                 e.printStackTrace();
             } catch (RemoteException e) {
                 Log.e(LOG_TAG, "Error applying batch insert", e);
