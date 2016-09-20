@@ -10,11 +10,11 @@ An app which has an easy-to-use interface for finding specific stocks. It has a 
 
 ##ACKNOWLEDGEMENTS
 Thanks to these libraries:
-*[material-dialogs] (https://github.com/afollestad/material-dialogs)
-*[okhttp] (https://github.com/square/okhttp)
-*[schematic] (https://github.com/SimonVT/schematic)
-*[FloatingActionButton] (https://github.com/makovkastar/FloatingActionButton)
-*[MPAndroidChart] (https://github.com/PhilJay/MPAndroidChart)
+* [material-dialogs] (https://github.com/afollestad/material-dialogs)
+* [okhttp] (https://github.com/square/okhttp)
+* [schematic] (https://github.com/SimonVT/schematic)
+* [FloatingActionButton] (https://github.com/makovkastar/FloatingActionButton)
+* [MPAndroidChart] (https://github.com/PhilJay/MPAndroidChart)
 
 ##AUTHORS
 * [Sam Chordas] (https://github.com/schordas?tab=overview&from=2016-08-01&to=2016-08-31&utf8=%E2%9C%93) - initial work on app
