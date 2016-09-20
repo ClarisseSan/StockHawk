@@ -24,7 +24,7 @@
             style="@style/WidgetTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:textStyle="bold"
             tools:text="GOOG" />
 
@@ -32,15 +32,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="right">
+            android:gravity="end">
 
             <TextView
                 android:id="@+id/bid_price"
                 style="@style/WidgetTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="10sp"
-                android:paddingRight="10sp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="100dp"
+                android:paddingRight="10dp"
+                android:paddingStart="100dp"
                 tools:text="1000.00" />
 
             <TextView
