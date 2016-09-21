@@ -22,7 +22,9 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.HistoryColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
@@ -32,6 +34,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.google.android.gms.internal.zzid.runOnUiThread;
 
 /**
  * Created by sam_chordas on 10/8/15.
@@ -43,7 +47,7 @@ public class Utils {
     public static boolean showPercent = true;
 
 
-    public static ArrayList quoteJsonToContentVals(String JSON) {
+    public static ArrayList quoteJsonToContentVals(String JSON,final Context context) {
         ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
         JSONObject jsonObject = null;
         JSONArray resultsArray = null;
@@ -60,7 +64,15 @@ public class Utils {
                     if (!averageDailyVolume.equals("null")) {
                         batchOperations.add(buildBatchOperation(jsonObject));
                     } else {
-                        //TODO show error message
+                        //show error message
+                        runOnUiThread(new Runnable() {
+                            public void run()
+                            {
+                                Toast.makeText(context, context.getString(R.string.no_symbol_found),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+
                     }
 
 
@@ -196,6 +208,7 @@ public class Utils {
         }
         return builder.build();
     }
+
 
 
 }

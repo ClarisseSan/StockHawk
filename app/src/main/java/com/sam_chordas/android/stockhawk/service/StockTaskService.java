@@ -149,7 +149,7 @@ public class StockTaskService extends GcmTaskService {
                     }
 
                     mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
-                            Utils.quoteJsonToContentVals(getResponse));
+                            Utils.quoteJsonToContentVals(getResponse,mContext));
 
                     //notify widget that there's a change in db
                     mContext.sendBroadcast(new Intent(StocksWidgetProvider.UPDATE_STOCKS_ACTION_DATABASE));
