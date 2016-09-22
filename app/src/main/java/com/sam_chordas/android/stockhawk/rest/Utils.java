@@ -61,7 +61,8 @@ public class Utils {
                             .getJSONObject("quote");
 
                     String averageDailyVolume = jsonObject.getString("AverageDailyVolume");
-                    if (!averageDailyVolume.equals("null")) {
+                    String companyName = jsonObject.getString("Name");
+                    if (!averageDailyVolume.equals("null") && !companyName.equals("null")) {
                         batchOperations.add(buildBatchOperation(jsonObject));
                     } else {
                         //show error message
