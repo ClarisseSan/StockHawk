@@ -17,7 +17,6 @@ limitations under the License.
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -73,8 +72,6 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final int CURSOR_LOADER_ID = 0;
     boolean isConnected;
-    //for receiving results sent by the gcmtaskservice
-    BroadcastReceiver receiver;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -86,11 +83,11 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
 
     private CharSequence mTitle;
     private Intent mServiceIntent;
-    private ItemTouchHelper mItemTouchHelper;
+
     private QuoteCursorAdapter mCursorAdapter;
     private Context mContext;
     private Cursor mCursor;
-    private Intent  mHistoryServiceIntent;
+    private Intent mHistoryServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,7 +186,6 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
                                                         Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                         toast.show();
-                                        return;
                                     } else {
                                         // Add the stock to DB
                                         mServiceIntent.putExtra("tag", "add");
@@ -208,8 +204,8 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
 
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mCursorAdapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         mTitle = getTitle();
         if (isConnected) {
