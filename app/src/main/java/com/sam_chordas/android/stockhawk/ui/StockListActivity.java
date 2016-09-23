@@ -83,11 +83,10 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
 
     private CharSequence mTitle;
     private Intent mServiceIntent;
-
     private QuoteCursorAdapter mCursorAdapter;
     private Context mContext;
     private Cursor mCursor;
-    private Intent mHistoryServiceIntent;
+    private Intent  mHistoryServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +185,7 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
                                                         Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                         toast.show();
+                                        return;
                                     } else {
                                         // Add the stock to DB
                                         mServiceIntent.putExtra("tag", "add");
@@ -204,8 +204,8 @@ public class StockListActivity extends AppCompatActivity implements LoaderCallba
 
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mCursorAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
 
         mTitle = getTitle();
         if (isConnected) {
