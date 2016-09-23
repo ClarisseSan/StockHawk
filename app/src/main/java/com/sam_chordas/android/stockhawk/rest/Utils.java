@@ -83,7 +83,11 @@ public class Utils {
                     if (resultsArray != null && resultsArray.length() != 0) {
                         for (int i = 0; i < resultsArray.length(); i++) {
                             jsonObject = resultsArray.getJSONObject(i);
-                            batchOperations.add(buildBatchOperation(jsonObject));
+                            String bidPrice = jsonObject.getString("Bid");
+                            if(!bidPrice.equals("null")){
+                                batchOperations.add(buildBatchOperation(jsonObject));
+                            }
+
                         }
                     }
                 }
